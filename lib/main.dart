@@ -1,4 +1,8 @@
 import 'package:eco_route_mobile_app/core/api/api_service.dart';
+import 'package:eco_route_mobile_app/core/env/env.dart';
+import 'package:eco_route_mobile_app/core/logger/logger.dart';
+import 'package:eco_route_mobile_app/core/logger/logger_bloc_observer.dart';
+import 'package:eco_route_mobile_app/core/logger/logger_factory.dart';
 import 'package:eco_route_mobile_app/features/auth/domain/repositories/auth_repository.dart';
 import 'package:eco_route_mobile_app/features/auth/domain/repositories/token_repository.dart';
 import 'package:eco_route_mobile_app/features/auth/domain/usecases/get_current_user.dart';
@@ -17,28 +21,34 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  final Logger logger = LoggerFactory.createImplementation();
+  Bloc.observer = LoggerBlocObserver(logger);
+  runApp(MyApp(logger: logger,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Logger logger;
+  const MyApp({super.key, required this.logger});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<ApiService>(
-          create: (_) => ApiService(),
+        RepositoryProvider<Logger>(
+          create: (_) => logger,
         ),
-        Provider<FlutterSecureStorage>(
+        RepositoryProvider<ApiService>(
+          create: (_) => ApiService(Env.getInstance()),
+        ),
+        RepositoryProvider<FlutterSecureStorage>(
           create: (_) => const FlutterSecureStorage(),
         ),
-        Provider<TokenRepository>(
+        RepositoryProvider<TokenRepository>(
           create: (context) => TokenRepositoryImpl(
             secureStorage: context.read<FlutterSecureStorage>(),
           ),
         ),
-        Provider<AuthRepository>(
+        RepositoryProvider<AuthRepository>(
           create: (context) => AuthRepositoryImpl(
             apiService: context.read<ApiService>(),
             tokenRepository: context.read<TokenRepository>(),
@@ -51,6 +61,7 @@ class MyApp extends StatelessWidget {
               login: Login(authRepository),
               getCurrentUser: GetCurrentUser(authRepository),
               logout: Logout(authRepository),
+              logger: context.read<Logger>(),
             )..add(AppStarted());
           },
         ),

@@ -30,7 +30,7 @@
           manager = "flutter";
         };
         android = {
-          command = ["flutter" "run" "--machine" "-d" "android" "-d" "localhost:5555"];
+          command = ["flutter" "run" "--machine" "-d" "android" "-d" "localhost:5555" "--dart-define-from-file" ".env"];
           manager = "flutter";
         };
       };
