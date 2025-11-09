@@ -22,24 +22,26 @@ class LoginScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is AuthAuthenticated) {
               Fluttertoast.showToast(
-                  msg: "Login Successful",
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.green,
-                  textColor: Colors.white,
-                  fontSize: 16.0);
+                msg: "Login Successful",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.green,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
               context.go('/home');
             }
             if (state is AuthFailure) {
               Fluttertoast.showToast(
-                  msg: state.message,
-                  toastLength: Toast.LENGTH_SHORT,
-                  gravity: ToastGravity.BOTTOM,
-                  timeInSecForIosWeb: 1,
-                  backgroundColor: Colors.red,
-                  textColor: Colors.white,
-                  fontSize: 16.0);
+                msg: state.message,
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                fontSize: 16.0,
+              );
             }
           },
           child: Padding(
@@ -95,27 +97,35 @@ class LoginScreen extends StatelessWidget {
                               return const CircularProgressIndicator();
                             }
                             return ElevatedButton(
-                              style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadiusGeometry.all(Radius.circular(8))), backgroundColor: Colors.green, foregroundColor: Colors.white),
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadiusGeometry.all(
+                                    Radius.circular(8),
+                                  ),
+                                ),
+                                backgroundColor: Colors.green,
+                                foregroundColor: Colors.white,
+                              ),
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  context.read<AuthBloc>().add(LoggedIn(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                      ));
+                                  context.read<AuthBloc>().add(
+                                    LoggedIn(
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    ),
+                                  );
                                 }
                               },
                               child: const Text('Login'),
                             );
                           },
                         ),
-                      ]
+                      ],
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("DevPro 2025"),
-                    ]
+                    children: [const Text("DeVPro UPX II - 2025")],
                   ),
                 ],
               ),
