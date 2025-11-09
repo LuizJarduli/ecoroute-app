@@ -29,16 +29,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       logger.log('Checking current user');
       final failureOrUser = await getCurrentUser(NoParams());
-      emit(failureOrUser.fold(
-        (failure) {
-          logger.log('No user found, emitting AuthUnauthenticated');
-          return AuthUnauthenticated();
-        },
-        (user) {
-          logger.log('User found: ${user?.id}, emitting AuthAuthenticated');
-          return AuthAuthenticated(user!);
-        },
-      ));
+      emit(
+        failureOrUser.fold(
+          (failure) {
+            logger.log('No user found, emitting AuthUnauthenticated');
+            return AuthUnauthenticated();
+          },
+          (user) {
+            if (user != null) {
+              logger.log('User found: ${user.id}, emitting AuthAuthenticated');
+              return AuthAuthenticated(user);
+            }
+
+            return AuthUnauthenticated();
+          },
+        ),
+      );
     } catch (e, s) {
       logger.error('Error in _onAppStarted', e, s);
       emit(AuthUnauthenticated());
@@ -49,18 +55,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       emit(AuthLoading());
       logger.log('Attempting login for email: ${event.email}');
-      final failureOrUser =
-          await login(LoginParams(email: event.email, password: event.password));
-      emit(failureOrUser.fold(
-        (failure) {
-          logger.error('Login failed', failure, StackTrace.current);
-          return const AuthFailure('Invalid credentials');
-        },
-        (user) {
-          logger.log('Login successful for user: ${user.id}');
-          return AuthAuthenticated(user);
-        },
-      ));
+      final failureOrUser = await login(
+        LoginParams(email: event.email, password: event.password),
+      );
+      emit(
+        failureOrUser.fold(
+          (failure) {
+            logger.error('Login failed', failure, StackTrace.current);
+            return const AuthFailure('Invalid credentials');
+          },
+          (user) {
+            logger.log('Login successful for user: ${user.id}');
+            return AuthAuthenticated(user);
+          },
+        ),
+      );
     } catch (e, s) {
       logger.error('Error in _onLoggedIn', e, s);
       emit(const AuthFailure('An unexpected error occurred during login.'));
