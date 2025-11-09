@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:eco_route_mobile_app/core/l10n/app_strings.dart';
 import 'package:eco_route_mobile_app/core/logger/logger.dart';
 import 'package:eco_route_mobile_app/core/usecases/usecase.dart';
 import 'package:eco_route_mobile_app/features/auth/domain/usecases/get_current_user.dart';
@@ -62,7 +63,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         failureOrUser.fold(
           (failure) {
             logger.error('Login failed', failure, StackTrace.current);
-            return const AuthFailure('Invalid credentials');
+            return const AuthFailure(AppStrings.invalidCredentials);
           },
           (user) {
             logger.log('Login successful for user: ${user.id}');
@@ -72,7 +73,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
     } catch (e, s) {
       logger.error('Error in _onLoggedIn', e, s);
-      emit(const AuthFailure('An unexpected error occurred during login.'));
+      emit(const AuthFailure(AppStrings.loginError));
     }
   }
 

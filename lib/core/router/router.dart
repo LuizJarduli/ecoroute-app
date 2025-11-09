@@ -4,7 +4,10 @@ import 'package:eco_route_mobile_app/features/auth/presentation/bloc/auth_bloc.d
 import 'package:eco_route_mobile_app/features/auth/presentation/bloc/auth_state.dart';
 import 'package:eco_route_mobile_app/features/auth/presentation/screens/login_screen.dart';
 import 'package:eco_route_mobile_app/features/home/presentation/screens/home_screen.dart';
+import 'package:eco_route_mobile_app/features/home/presentation/screens/main_navigation_shell.dart';
+import 'package:eco_route_mobile_app/features/profile/presentation/screens/profile_screen.dart';
 import 'package:eco_route_mobile_app/features/splash/presentation/screens/splash_screen.dart';
+import 'package:eco_route_mobile_app/features/tickets/presentation/screens/tickets_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -34,9 +37,13 @@ GoRouter createRouter(
     redirect: (context, state) {
       final authBloc = context.read<AuthBloc>();
       final authState = authBloc.state;
-      final isGoingToLogin = state.uri.path == '/login';
-      final isGoingToHome = state.uri.path == '/home';
-      final isGoingToRoot = state.uri.path == '/';
+      final path = state.uri.path;
+      final isGoingToLogin = path == '/login';
+      final isGoingToMainNav =
+          path.startsWith('/home') ||
+          path.startsWith('/tickets') ||
+          path.startsWith('/profile');
+      final isGoingToRoot = path == '/';
 
       // Handle initial/loading state
       if (authState is AuthInitial || authState is AuthLoading) {
@@ -56,7 +63,7 @@ GoRouter createRouter(
 
       // Handle unauthenticated state
       if (authState is AuthUnauthenticated || authState is AuthFailure) {
-        if (isGoingToHome || isGoingToRoot) {
+        if (isGoingToMainNav || isGoingToRoot) {
           return '/login';
         }
         return null;
@@ -67,7 +74,25 @@ GoRouter createRouter(
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-      GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+      ShellRoute(
+        builder: (context, state, child) {
+          return MainNavigationShell(location: state.uri.path, child: child);
+        },
+        routes: [
+          GoRoute(
+            path: '/home',
+            builder: (context, state) => const HomeScreen(),
+          ),
+          GoRoute(
+            path: '/tickets',
+            builder: (context, state) => const TicketsScreen(),
+          ),
+          GoRoute(
+            path: '/profile',
+            builder: (context, state) => const ProfileScreen(),
+          ),
+        ],
+      ),
     ],
   );
 }

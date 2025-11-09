@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:eco_route_mobile_app/core/l10n/app_strings.dart';
 import 'package:eco_route_mobile_app/features/auth/presentation/bloc/auth_bloc.dart';
 import 'package:eco_route_mobile_app/features/auth/presentation/bloc/auth_event.dart';
 import 'package:eco_route_mobile_app/features/auth/presentation/bloc/auth_state.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class LoginScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is AuthAuthenticated) {
               Fluttertoast.showToast(
-                msg: "Login Successful",
+                msg: AppStrings.loginSuccessful,
                 toastLength: Toast.LENGTH_SHORT,
                 gravity: ToastGravity.BOTTOM,
                 timeInSecForIosWeb: 1,
@@ -65,12 +66,12 @@ class LoginScreen extends StatelessWidget {
                         TextFormField(
                           controller: _emailController,
                           decoration: const InputDecoration(
-                            labelText: 'Email',
+                            labelText: AppStrings.email,
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your email';
+                              return AppStrings.pleaseEnterEmail;
                             }
                             return null;
                           },
@@ -80,12 +81,12 @@ class LoginScreen extends StatelessWidget {
                           controller: _passwordController,
                           obscureText: true,
                           decoration: const InputDecoration(
-                            labelText: 'Password',
+                            labelText: AppStrings.password,
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Please enter your password';
+                              return AppStrings.pleaseEnterPassword;
                             }
                             return null;
                           },
@@ -116,7 +117,7 @@ class LoginScreen extends StatelessWidget {
                                   );
                                 }
                               },
-                              child: const Text('Login'),
+                              child: const Text(AppStrings.login),
                             );
                           },
                         ),
@@ -125,7 +126,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [const Text("DeVPro UPX II - 2025")],
+                    children: [const Text(AppStrings.devProFooter)],
                   ),
                 ],
               ),

@@ -1,5 +1,6 @@
 import 'package:eco_route_mobile_app/core/api/api_service.dart';
 import 'package:eco_route_mobile_app/core/env/env.dart';
+import 'package:eco_route_mobile_app/core/l10n/app_strings.dart';
 import 'package:eco_route_mobile_app/core/logger/logger.dart';
 import 'package:eco_route_mobile_app/core/logger/logger_bloc_observer.dart';
 import 'package:eco_route_mobile_app/core/logger/logger_factory.dart';
@@ -83,7 +84,7 @@ class _MyAppState extends State<MyApp> {
           _router ??= createRouter(context, _authRefreshNotifier!);
 
           return MaterialApp.router(
-            title: 'EcoRoute',
+            title: AppStrings.appTitle,
             theme: ThemeData(
               primarySwatch: Colors.green,
               visualDensity: VisualDensity.adaptivePlatformDensity,
