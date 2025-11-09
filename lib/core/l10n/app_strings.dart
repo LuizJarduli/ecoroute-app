@@ -22,6 +22,18 @@ class AppStrings {
   static const String welcomeToEcoRoute = 'Bem-vindo ao EcoRoute!';
   static const String wasteCollectionCompanion =
       'Seu companheiro de coleta de resíduos';
+  static const String createTicket = 'Abrir Chamado';
+  static const String createTicketNow = 'Abrir Chamado Agora';
+  static const String activeTickets = 'Chamados Ativos';
+  static const String totalTickets = 'Total de Chamados';
+  static const String resolvedTickets = 'Chamados Resolvidos';
+  static const String excellent = 'Excelente';
+  static const String currentStatus = 'Status Atual';
+  static const String quickActions = 'Ações Rápidas';
+  static const String viewAllTickets = 'Ver Todos os Chamados';
+  static const String recentActivity = 'Atividade Recente';
+  static const String wasteManagement = 'Gestão de Resíduos';
+  static const String reportCollectionProblems = 'Reporte problemas de coleta';
 
   // Tickets Screen
   static const String ticketsTitle = 'Chamados';

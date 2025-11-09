@@ -44,13 +44,9 @@ class _MainNavigationShellState extends State<MainNavigationShell> {
   }
 
   PreferredSizeWidget? _getAppBar(String location) {
+    // Home screen doesn't need AppBar as it has its own header
     if (location.startsWith('/home')) {
-      return AppBar(
-        title: const Text(AppStrings.appTitle),
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-        elevation: 0,
-      );
+      return null;
     } else if (location.startsWith('/tickets')) {
       return AppBar(
         title: const Text(AppStrings.ticketsTitle),
